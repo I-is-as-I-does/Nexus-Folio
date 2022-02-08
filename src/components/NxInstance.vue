@@ -185,20 +185,18 @@ export default {
     },
     startLoader: function () {
       this.loaderPosition = 0
-      window.setTimeout(function () {
-        var wait = window.setInterval(function () {
-          switch (this.loaderPosition) {
-            case -1:
-              clearInterval(wait)
-              break
-            case 4:
-              this.loaderPosition = 1
-              break
-            default:
-              this.loaderPosition++
-          }
-        }.bind(this), 200)
-      }.bind(this), 400)
+      var wait = window.setInterval(function () {
+        switch (this.loaderPosition) {
+          case -1:
+            clearInterval(wait)
+            break
+          case 4:
+            this.loaderPosition = 1
+            break
+          default:
+            this.loaderPosition++
+        }
+      }.bind(this), 150)
     },
     resolveView: function (view) {
       var promises = []
