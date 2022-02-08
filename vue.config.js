@@ -13,6 +13,11 @@ module.exports = {
       config.output.filename = 'js/[name].[hash].min.js'
       config.output.chunkFilename = 'js/[name].[hash].min.js'
     } else {
+      config.optimization.splitChunks = {
+        cacheGroups: {
+          default: false
+        }
+      }
       config.output.filename = 'js/NxFolio.js'
       config.output.chunkFilename = 'js/NxFolio-[name].js'
     }
