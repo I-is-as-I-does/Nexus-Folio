@@ -27,7 +27,7 @@
 
  <transition @enter="easeIn" @leave="easeOut" mode="out-in">
 
-<div v-if="instance.views.author.src === current.src" class="nx-index">
+<div v-if="instance.views.author.src === current.src && instance.views.threads.length" class="nx-index">
  <ul>
     <li v-for="(view, idx) in instance.views.threads" :key="idx">
         <nx-thread-link :view="view" @triggerView="changeState"></nx-thread-link>
@@ -35,7 +35,7 @@
 </ul>
  </div>
 
-<div v-else class="nx-main">
+<div v-else-if="instance.views.author.src !== current.src " class="nx-main">
    <nx-thread-title :title="current.data.title"></nx-thread-title>
 
    <transition @enter="easeIn" @leave="easeOut" mode="out-in">

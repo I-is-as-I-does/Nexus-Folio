@@ -20,7 +20,9 @@
                     "caption": "Caption field"
                 }
             },
-            "linked": ["http://localhost:8080/nexus/source/limits-test.json#lots-of-lots"]
+            "linked": ["http://localhost:8080/nexus/source/leacy-test.json#Thread-I-legacy",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots",
+                "http://localhost:8080/nexus/source/limits-test.json"]
         },
         {
             "id": "Self-linking-Test",
