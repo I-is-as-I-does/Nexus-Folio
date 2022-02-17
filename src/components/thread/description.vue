@@ -1,6 +1,6 @@
 /*! Nexus | (c) 2021-22 I-is-as-I-does | AGPLv3 license */
 <template>
-    <div class="nx-thread-description">
+    <div v-if="description" class="nx-thread-description">
        <p v-for="(paragraph, idx) in descriptionLines" :key="idx">{{paragraph}}</p>
       </div>
   </template>
@@ -11,7 +11,7 @@ export default {
   name: 'NxThreadDescription',
   props: {
     description: {
-      type: String,
+      type: [String, undefined],
       default: ''
     }
   },

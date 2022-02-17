@@ -16,8 +16,8 @@ export default {
     NxThreadText
   },
   props: {
-    timestamp: String,
-    main: String,
+    timestamp: [String, undefined],
+    main: [String, undefined],
     aside: [String, undefined],
     media: {
       type: [Object, undefined]

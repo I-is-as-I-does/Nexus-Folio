@@ -17,16 +17,22 @@ import { splitOnLineBreaks } from '@i-is-as-i-does/jack-js/src/modules/Help'
 export default {
   name: 'NxThreadText',
   props: {
-    timestamp: String,
-    main: String,
+    timestamp: [String, undefined],
+    main: [String, undefined],
     aside: [String, undefined]
   },
   computed: {
     formatTimestamp: function () {
-      return this.timestamp.replace('T', ' ')
+      if (this.timestamp) {
+        return this.timestamp.replace('T', ' ').replace('Z', '')
+      }
+      return ''
     },
     mainLines: function () {
-      return splitOnLineBreaks(this.main)
+      if (this.main) {
+        return splitOnLineBreaks(this.main)
+      }
+      return []
     },
     asideLines: function () {
       if (this.aside) {

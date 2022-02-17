@@ -1,6 +1,6 @@
 
 /*! Nexus | (c) 2021-22 I-is-as-I-does | AGPLv3 license */<template>
-    <div class="nx-author-about">
+    <div v-if="about" class="nx-author-about">
         <p v-for="(paragraph, idx) in aboutLines" :key="idx">{{paragraph}}</p>
     </div>
   </template>

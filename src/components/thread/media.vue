@@ -1,6 +1,6 @@
 /*! Nexus | (c) 2021-22 I-is-as-I-does | AGPLv3 license */
 <template>
-<section class="nx-media-content">
+<section v-if="type && url" class="nx-media-content">
 
     <div v-if="caption" class="nx-media-caption">
    <p v-for="(paragraph, idx) in captionLines" :key="idx">{{paragraph}}</p>
@@ -34,13 +34,16 @@ import { conciseUrl } from '@i-is-as-i-does/jack-js/src/modules/Web'
 export default {
   name: 'NxThreadMedia',
   props: {
-    url: String,
-    type: String,
+    url: [String, undefined],
+    type: [String, undefined],
     caption: [String, undefined]
   },
   computed: {
     containerClass: function () {
-      return 'nx-media-' + this.type
+      if (this.type) {
+        return 'nx-media-' + this.type
+      }
+      return ''
     },
     displayMediaUrl: function () {
       return conciseUrl(this.url)

@@ -12,6 +12,7 @@
 <script>
 import NxAppHeader from './components/app/header.vue'
 import NxInstance from './components/NxInstance.vue'
+import { getSrcDocData } from '@i-is-as-i-does/nexus-core/src/load/NxSrc.js'
 import { initAll } from '@i-is-as-i-does/nexus-core/src/load/NxInit.js'
 import NxNoInstance from './components/NxNoInstance.vue'
 import { logErr } from '@i-is-as-i-does/nexus-core/src/logs/NxLog'
@@ -33,6 +34,15 @@ export default {
   created () {
     initAll({ appDefaultCss: styleUrl }).then(seed => {
       this.seed = extendInitData(seed)
+      this.seed.nxelm.addEventListener('change', function () {
+        if (this.seed.nxelm.dataset.srcdoc) {
+          var nxdata = getSrcDocData(this.seed.nxelm.dataset.srcdoc, this.seed.request.mode === 'editor')
+          if (nxdata) {
+            this.seed.nxdata = nxdata
+            extendInitData(this.seed)
+          }
+        }
+      }.bind(this))
     }).catch((err) => {
       logErr(err.message)
       this.feedback = '– /–'

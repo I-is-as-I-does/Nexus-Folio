@@ -1,6 +1,6 @@
 /*! Nexus | (c) 2021-22 I-is-as-I-does | AGPLv3 license */
 <template>
- <a class="nx-thread-link" @click="relayTriggerView()">
+ <a v-if="view.data.title" class="nx-thread-link" @click="relayTriggerView()">
        <nx-thread-title :title="view.data.title"></nx-thread-title>
      <transition @enter="fadeIn" @leave="fadeOut">
          <span v-if="unseen" class="nx-unseen">*</span>
@@ -22,10 +22,22 @@ export default {
   },
   data () {
     return {
-      unseen: isThreadContentUnseen(this.view.src, this.view.data.content.timestamp)
+      unseen: this.firstUnseen()
     }
   },
   methods: {
+    canprc: function () {
+      if (this.view.data.content && this.view.data.content.timestamp) {
+        return true
+      }
+      return false
+    },
+    firstUnseen: function () {
+      if (this.canprc()) {
+        return isThreadContentUnseen(this.view.src, this.view.data.content.timestamp)
+      }
+      return false
+    },
     fadeIn: function (e) {
       vShow(e, 'fade')
     },

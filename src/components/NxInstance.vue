@@ -9,7 +9,7 @@
 </div>
 
     <div class="nx-author">
-<a @click="toggleAuthor()" class="nx-author-link" :class="{'nx-author-collapsed':authorCollapsed}">
+<a v-if="instance.views.author.data.handle" @click="toggleAuthor()" class="nx-author-link" :class="{'nx-author-collapsed':authorCollapsed}">
 <nx-author-handle :handle="instance.views.author.data.handle"></nx-author-handle>
 </a>
 <transition @enter="easeIn" @leave="easeOut">
@@ -18,7 +18,7 @@
 
 <div class="nx-author-details">
      <nx-author-about v-if="instance.views.author.data.about" :about="instance.views.author.data.about"></nx-author-about>
-     <nx-author-url :url="instance.views.author.data.url"></nx-author-url>
+     <nx-author-url v-if="instance.views.author.data.url" :url="instance.views.author.data.url"></nx-author-url>
   </div>
   <nx-embed :closed="!authorCollapsed" :src="instance.views.author.src" :styleUrl="styleUrl"></nx-embed>
   </div>
@@ -30,13 +30,13 @@
 <div v-if="instance.views.author.src === current.src && instance.views.threads.length" class="nx-index">
  <ul>
     <li v-for="(view, idx) in instance.views.threads" :key="idx">
-        <nx-thread-link :view="view" @triggerView="changeState"></nx-thread-link>
+        <nx-thread-link v-if="view.data.title" :view="view" @triggerView="changeState"></nx-thread-link>
         </li>
 </ul>
  </div>
 
 <div v-else-if="instance.views.author.src !== current.src " class="nx-main">
-   <nx-thread-title :title="current.data.title"></nx-thread-title>
+   <nx-thread-title v-if="current.data.title" :title="current.data.title"></nx-thread-title>
 
    <transition @enter="easeIn" @leave="easeOut" mode="out-in">
  <div v-if="loaderPosition > -1" class="nx-loading">
@@ -47,7 +47,7 @@
 <transition @enter="easeIn" @leave="easeOut">
  <div v-if="nindex === -1" class="nx-thread-block">
  <nx-thread-description v-if="current.data.description" :description="current.data.description"></nx-thread-description>
-    <nx-thread-content v-bind="current.data.content"></nx-thread-content>
+    <nx-thread-content v-if="current.data.content" v-bind="current.data.content"></nx-thread-content>
     <nx-embed :closed="nindex === -1" :src="current.src" :styleUrl="styleUrl"></nx-embed>
 </div>
  </transition>
@@ -107,6 +107,13 @@ export default {
       current: { src: this.instance.views.author.src }
     }
   },
+  watch: {
+    instance: function (ninstance) {
+      if (ninstance) {
+        this.resolveRequestedSrc(this.current.src, true)
+      }
+    }
+  },
   created () {
     if (this.index === -1) {
       listenToHistoryChange(this.resolveRequestedSrc.bind(this))
@@ -151,11 +158,11 @@ export default {
         }
       }
     },
-    resolveRequestedSrc (src) {
-      this.changeState(getView(this.instance, src), true)
+    resolveRequestedSrc (src, resetCurrent = false) {
+      this.changeState(getView(this.instance, src), true, resetCurrent)
     },
-    changeState (view, skipBubble = false) {
-      if (view.src !== this.current.src) {
+    changeState (view, skipBubble = false, resetCurrent = false) {
+      if (resetCurrent || (view.src !== this.current.src)) {
         if (!skipBubble) {
           if (this.index === -1) {
             addViewToHistory(view.src)
@@ -171,7 +178,7 @@ export default {
             authorCollapsed = true
           }
         } else if (view.resolved.nested === false || view.resolved.media === false) {
-          this.resolveView(view)
+          this.resolveView(view, resetCurrent)
         } else {
           this.current = view
         }
@@ -198,13 +205,13 @@ export default {
         }
       }.bind(this), 150)
     },
-    resolveView: function (view) {
+    resolveView: function (view, resetCurrent = false) {
       var promises = []
 
       if (view.resolved.nested === false) {
         if (view.data.linked) {
           view.resolved.nested = null
-          promises.push(resolveLinkedViews(view, this.nParents))
+          promises.push(resolveLinkedViews(view, this.nParents, resetCurrent))
         } else {
           view.resolved.nested = true
         }
@@ -220,11 +227,16 @@ export default {
 
       if (!promises.length) {
         this.current = view
-      } else {
+      } else if (!resetCurrent) {
         this.startLoader()
         this.current = view
         Promise.all(promises).then(() => {
           this.endLoader()
+        })
+      } else {
+        this.current = view
+        Promise.all(promises).then(() => {
+          this.current = view
         })
       }
     }
