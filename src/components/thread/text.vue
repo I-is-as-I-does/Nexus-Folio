@@ -24,7 +24,7 @@ export default {
   computed: {
     formatTimestamp: function () {
       if (this.timestamp) {
-        return this.timestamp.replace('T', ' ').replace('Z', '')
+        return new Date(this.timestamp).toISOString().split('T')[0]
       }
       return ''
     },

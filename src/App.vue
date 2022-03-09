@@ -1,11 +1,12 @@
 /*! Nexus | (c) 2021-22 I-is-as-I-does | AGPLv3 license */
 <template>
-<div class="nx">
-   <div v-if="seed" class="nx-reader">
+<div class="nx" v-if="on !== null">
+    <nx-no-instance v-if="on === false" :msg="feedback"></nx-no-instance>
+   <div v-else class="nx-reader">
    <nx-app-header></nx-app-header>
   <nx-instance class="nx-origin" :styleUrl="seed.styleUrl" :instance="seed.viewstore" :collapsedAuthor="-1" :index="-1" :first="seed.firstview" :parents="[]"></nx-instance>
    </div>
-  <nx-no-instance v-else :msg="feedback"></nx-no-instance>
+
 </div>
 
 </template>
@@ -27,25 +28,30 @@ export default {
   },
   data () {
     return {
+      on: null,
       seed: null,
-      feedback: ''
+      feedback: '– /–'
     }
   },
   created () {
     initAll({ appDefaultCss: styleUrl }).then(seed => {
       this.seed = extendInitData(seed)
+      this.on = true
       this.seed.nxelm.addEventListener('change', function () {
         if (this.seed.nxelm.dataset.srcdoc) {
           var nxdata = getSrcDocData(this.seed.nxelm.dataset.srcdoc, this.seed.request.mode === 'editor')
           if (nxdata) {
             this.seed.nxdata = nxdata
             extendInitData(this.seed)
+            this.on = true
+          } else {
+            this.on = false
           }
         }
       }.bind(this))
     }).catch((err) => {
+      this.on = false
       logErr(err.message)
-      this.feedback = '– /–'
     })
   }
 }

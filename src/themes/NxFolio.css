@@ -80,13 +80,13 @@
   width: calc(100vw - 17px);
 }
 
-.nx .nx-reader {
+.nx .nx-reader, .nx .nx-no-instance {
   min-width: 360px;
   width: 940px;
   max-width: 100%;
   margin: 0 auto;
   position: relative;
-  padding: 4vh 4vw 10vw 4vw;
+  padding: 4vh 4vw 10vh 4vw;
 }
 
 /* general */
