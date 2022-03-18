@@ -2,7 +2,7 @@
 /*! Nexus | (c) 2021-22 I-is-as-I-does | AGPLv3 license */
 <template>
       <section class="nx-text-content">
-<span class="nx-content-timestamp">{{ formatTimestamp }}</span>
+<span class="nx-content-timestamp">{{ getTimestamp }}</span>
   <div class="nx-content-main">
      <p v-for="paragraph in mainLines" :key="paragraph">{{paragraph}}</p>
   </div>
@@ -22,9 +22,9 @@ export default {
     aside: [String, undefined]
   },
   computed: {
-    formatTimestamp: function () {
+    getTimestamp: function () {
       if (this.timestamp) {
-        return new Date(this.timestamp).toISOString().split('T')[0]
+        return this.timestamp
       }
       return ''
     },
