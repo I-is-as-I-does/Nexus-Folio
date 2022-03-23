@@ -24,7 +24,7 @@
 <script>
 import { getSnippet } from '@i-is-as-i-does/nexus-core/src/data/NxSnippet'
 import { vShow, vHide } from '@i-is-as-i-does/valva/src/modules/transitions.js'
-import { scriptSrc } from '../../AppDefaults'
+import { styleUrl, scriptSrc } from '../../AppDefaults'
 export default {
   name: 'NxEmbed',
   props: {
@@ -41,11 +41,17 @@ export default {
     src: function (newval) {
       if (newval) {
         this.snippets.json = newval
-        this.snippets.html = getSnippet(newval, this.theme, scriptSrc)
+        this.snippets.html = getSnippet(newval, this.getTheme(), scriptSrc)
       }
     }
   },
   methods: {
+    getTheme: function () {
+      if (this.theme && this.theme !== styleUrl) {
+        return this.theme
+      }
+      return ''
+    },
     easeIn: function (e) {
       vShow(e, 'ease')
     },
@@ -84,7 +90,7 @@ export default {
   },
   data () {
     return {
-      snippets: { json: this.src, html: getSnippet(this.src, this.theme, scriptSrc) },
+      snippets: { json: this.src, html: getSnippet(this.src, this.getTheme(), scriptSrc) },
       open: false,
       closeMark: '</>',
       type: 'html'
