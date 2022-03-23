@@ -233,7 +233,7 @@
 
 .nx .nx-content-timestamp {
   display: block;
-  padding-bottom: 0.5em;
+  padding-bottom: 0.85em;
 }
 
 /* media */
@@ -260,14 +260,17 @@
 .nx .nx-media-content {
   padding-top: 2em;
   position: relative;
-  width: 870px;
+  width: 800px;
   max-width: 100%;
 }
 .nx .nx-media-audio,
 .nx .nx-media-soundcloud {
   width: 600px;
 }
-
 .nx .nx-media-element > * {
   width: 100%;
+  max-width: 100%;
+}
+.nx .nx-media-image > img {
+  width: auto;
 }

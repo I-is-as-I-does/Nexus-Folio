@@ -24,11 +24,11 @@
 <script>
 import { getSnippet } from '@i-is-as-i-does/nexus-core/src/data/NxSnippet'
 import { vShow, vHide } from '@i-is-as-i-does/valva/src/modules/transitions.js'
-import { styleUrl, scriptSrc } from '../../AppDefaults'
+import { scriptSrc } from '../../AppDefaults'
 export default {
   name: 'NxEmbed',
   props: {
-    styleUrl: String,
+    theme: String,
     src: String,
     closed: Boolean
   },
@@ -41,7 +41,7 @@ export default {
     src: function (newval) {
       if (newval) {
         this.snippets.json = newval
-        this.snippets.html = getSnippet(newval, this.style, scriptSrc)
+        this.snippets.html = getSnippet(newval, this.theme, scriptSrc)
       }
     }
   },
@@ -84,16 +84,10 @@ export default {
   },
   data () {
     return {
-      style: null,
-      snippets: { json: this.src, html: getSnippet(this.src, this.style, scriptSrc) },
+      snippets: { json: this.src, html: getSnippet(this.src, this.theme, scriptSrc) },
       open: false,
       closeMark: '</>',
       type: 'html'
-    }
-  },
-  created () {
-    if (this.styleUrl !== styleUrl) {
-      this.style = this.styleUrl
     }
   }
 }

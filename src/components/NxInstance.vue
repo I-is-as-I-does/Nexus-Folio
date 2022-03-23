@@ -20,7 +20,7 @@
      <nx-author-about v-if="instance.views.author.data.about" :about="instance.views.author.data.about"></nx-author-about>
      <nx-author-url v-if="instance.views.author.data.url" :url="instance.views.author.data.url"></nx-author-url>
   </div>
-  <nx-embed :closed="!authorCollapsed" :src="instance.views.author.src" :styleUrl="styleUrl"></nx-embed>
+  <nx-embed :closed="!authorCollapsed" :src="instance.views.author.src" :theme="styleUrl"></nx-embed>
   </div>
  </transition>
  </div>
@@ -48,7 +48,7 @@
  <div v-if="nindex === -1" class="nx-thread-block">
  <nx-thread-description v-if="current.data.description" :description="current.data.description"></nx-thread-description>
     <nx-thread-content v-if="current.data.content" v-bind="current.data.content"></nx-thread-content>
-    <nx-embed :closed="nindex === -1" :src="current.src" :styleUrl="styleUrl"></nx-embed>
+    <nx-embed :closed="nindex === -1" :src="current.src" :theme="styleUrl"></nx-embed>
 </div>
  </transition>
 
